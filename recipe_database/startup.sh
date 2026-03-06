@@ -148,6 +148,16 @@ echo "User: ${DB_USER}"
 echo "Port: ${DB_PORT}"
 echo ""
 
+echo "Initializing Recipe Hub schema (migrations)..."
+chmod +x ./migrate.sh 2>/dev/null || true
+./migrate.sh up
+
+# Optional: seed demo data (set RECIPE_HUB_SEED=true to enable)
+if [ "${RECIPE_HUB_SEED}" = "true" ] 2>/dev/null; then
+    echo "Seeding demo data (RECIPE_HUB_SEED=true)..."
+    ./migrate.sh seed
+fi
+
 echo "Environment variables saved to db_visualizer/postgres.env"
 echo "To use with Node.js viewer, run: source db_visualizer/postgres.env"
 
